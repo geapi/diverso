@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+
+root = File.expand_path('../../', __FILE__)
+
+rspec_tags_options = (ARGV << '~js').uniq.map{ |tag| "-t #{tag}"}.join(" ")
+
+if (css_file_count = Dir.glob(root + "/**/*.css").size) > 32
+  puts
+  puts "  ####################### WARNING #######################"
+  puts
+  puts "  There are #{css_file_count} css files in the project which is above the 32 limit for IE"
+  puts
+  puts "  #######################################################"
+  puts
+end
+
+directories_to_run = Dir.glob(root + "/spec/*").select { |path| File.directory?(path) }.reject { |path| path == root + '/spec/acceptance' } << root + '/spec/acceptance'
+
+def execute(cmd)
+  puts cmd
+  system cmd
+end
+execute "mkdir -p tmp/csv_exports"
+execute "mkdir -p tmp/pdf_exports"
+execute "rake db:test:prepare"
+execute "rspec #{directories_to_run.join(" ")} #{rspec_tags_options}"
+execute "rspec spec/acceptance -t js"
+execute "rake jasmine:ci"
+# make sure the text fixtures still load
+puts "rake db:rebuild"
+system "rake db:rebuild > suite.log 2>&1"
+system %Q{
+if grep aborted suite.log > /dev/null
+then
+  echo "############################"
+  echo "test/fixture loading is broken"
+  echo "############################"
+  cat suite.log
+  echo "\n"
+  exit 1
+else
+  exit 0
+fi
+}
+system "rm -f suite.log"
