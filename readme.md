@@ -34,3 +34,11 @@ alias sweet="script/suite/app"
 alias gpr="git pull —rebase"
 alias gl='git log --pretty=format:'\''%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s'\'' --date=short'
 ```
+
+print line
+```
+p "#" * 30
+p "(#{__FILE__}:#{__LINE__})"
+p $END$
+p "#" * 30
+```
