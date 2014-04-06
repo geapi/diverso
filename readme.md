@@ -31,7 +31,7 @@ alias gs="git status"
 alias ga="git add -A"
 alias gcm="git commit -mA"
 alias sweet="script/suite/app"
-alias gpr="git pull —rebase"
+alias gpr="git pull --rebase"
 alias gl='git log --pretty=format:'\''%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s'\'' --date=short'
 ```
 
