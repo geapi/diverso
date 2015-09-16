@@ -1,3 +1,13 @@
+#text mate 2 save on focus lost
+create file .tm_properties in home folder
+add saveOnBlur = true to it
+```
+mate $HOME/.tm_properties
+```
+add 
+
+`saveOnBlur = true`
+
 # useful scripts
 - loose collection of different scripts I find useful
 
